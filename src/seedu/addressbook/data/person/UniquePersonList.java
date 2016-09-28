@@ -63,6 +63,7 @@ public class UniquePersonList implements Iterable<Person> {
      */
     public UniquePersonList(UniquePersonList source) {
         internalList.addAll(source.internalList);
+        Collections.sort(internalList, Person.COMPARATOR_NAME);
     }
 
     /**
