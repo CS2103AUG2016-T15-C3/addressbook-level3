@@ -61,6 +61,9 @@ public class Parser {
 
             case AddCommand.COMMAND_WORD:
                 return prepareAdd(arguments);
+                
+            case EditCommand.COMMAND_WORD:
+            	return prepareEdit(arguments);
 
             case DeleteCommand.COMMAND_WORD:
                 return prepareDelete(arguments);
@@ -142,7 +145,31 @@ public class Parser {
         return new HashSet<>(tagStrings);
     }
 
-
+    /**
+     * Parses arguments in the context of the edit person command.
+     *      
+     * @param args full command args string
+     * @return the prepared command
+     */
+    private Command prepareEdit(String args) {
+    	try {
+    		String argsWithoutSpace = args.trim();
+    		String[] argsParts1 = argsWithoutSpace.split("/");
+    		if (argsParts1.length != 2) {
+    			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+    		}
+    		String[] argsParts2 = argsParts1[0].split(" ");
+    		if (argsParts2.length != 2) {
+    			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+    		}
+    		final int targetIndex = parseArgsAsDisplayedIndex(argsParts2[0].trim());
+    		return new EditCommand(targetIndex, argsParts2[1].trim(), argsParts1[1].trim());
+    	}
+    	catch (ParseException | NumberFormatException e) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
+    }
+    
     /**
      * Parses arguments in the context of the delete person command.
      *
