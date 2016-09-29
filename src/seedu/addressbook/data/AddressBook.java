@@ -92,6 +92,13 @@ public class AddressBook {
     }
 
     /**
+     *  Edits contact detail of the equivalent person from the address book.
+     */
+    public void editPerson(ReadOnlyPerson toDelete, Person toAdd) throws PersonNotFoundException, DuplicatePersonException {
+    	allPersons.edit(toDelete, toAdd);
+    }
+    
+    /**
      * Checks if an equivalent person exists in the address book.
      */
     public boolean containsPerson(ReadOnlyPerson key) {

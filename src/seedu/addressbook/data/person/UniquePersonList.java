@@ -94,6 +94,14 @@ public class UniquePersonList implements Iterable<Person> {
         }
         internalList.add(toAdd);
     }
+    
+    /**
+     * Edit the equivalent person from the list.
+     */
+    public void edit(ReadOnlyPerson toDelete, Person toAdd) throws PersonNotFoundException, DuplicatePersonException {
+    	remove(toDelete);
+    	add(toAdd);
+    }
 
     /**
      * Removes the equivalent person from the list.
