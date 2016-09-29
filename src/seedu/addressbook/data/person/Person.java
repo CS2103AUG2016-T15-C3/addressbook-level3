@@ -2,6 +2,7 @@ package seedu.addressbook.data.person;
 
 import seedu.addressbook.data.tag.UniqueTagList;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -11,9 +12,9 @@ import java.util.Objects;
 public class Person implements ReadOnlyPerson {
 
     private Name name;
-    private Phone phone;
-    private Email email;
-    private Address address;
+    private HashMap<String, Phone> phoneList;
+    private HashMap<String, Email> emailList;
+    private HashMap<String, Address> addressList;
 
     private final UniqueTagList tags;
     /**
@@ -21,9 +22,9 @@ public class Person implements ReadOnlyPerson {
      */
     public Person(Name name, Phone phone, Email email, Address address, UniqueTagList tags) {
         this.name = name;
-        this.phone = phone;
-        this.email = email;
-        this.address = address;
+        this.phoneList.put("default", phone);
+        this.emailList.put("default", email);
+        this.addressList.put("default", address);
         this.tags = new UniqueTagList(tags); // protect internal tags from changes in the arg list
     }
 
@@ -40,20 +41,72 @@ public class Person implements ReadOnlyPerson {
     }
 
     @Override
+    /**
+     * Returns default phone number if user does not request a specific type of phone number
+     */
     public Phone getPhone() {
-        return phone;
+        return phoneList.get("default");
     }
-
-    @Override
+    
+    /**
+     * Returns the request type of phone number
+     */
+    public Phone getPhone(String type) {
+        return phoneList.get(type);
+    }
+    
+    /**
+     * Returns default email if user does not request a specific type of email
+     */
     public Email getEmail() {
-        return email;
+        return emailList.get("default");
     }
-
-    @Override
+    
+    /**
+     * Returns the request type of email
+     */
+    public Email getEmail(String type) {
+        return emailList.get(type);
+    }
+    
+    /**
+     * Returns default address if user does not request a specific type of address
+     */
     public Address getAddress() {
-        return address;
+        return addressList.get("default");
     }
-
+    
+    /**
+     * Returns the request type of address
+     */
+    public Address getAddress(String type) {
+        return addressList.get(type);
+    }
+    
+    /**
+     * Add an alternative phone number to a person
+     * Specifies the type of the phone number, e.g. "home," "work"
+     */
+    public void addAlternativePhone(String type, Phone phone) {
+    	this.phoneList.put(type, phone);
+    }
+    
+    /**
+     * Add an alternative email address to a person
+     * Specifies the type of the email address, e.g. "personal," "work"
+     */
+    public void addAlternativeEmail(String type, Email email) {
+    	this.emailList.put(type, email);
+    }
+    
+    /**
+     * Add an alternative address to a person
+     * Specifies the type of the address, e.g. "home," "work"
+     */
+    public void addAlternativePhone(String type, Address address) {
+    	this.addressList.put(type, address);
+    }
+    
     @Override
     public UniqueTagList getTags() {
         return new UniqueTagList(tags);
@@ -76,7 +129,7 @@ public class Person implements ReadOnlyPerson {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags);
+        return Objects.hash(name, phoneList.get("default"), emailList.get("default"), addressList.get("default"), tags);
     }
 
     @Override
